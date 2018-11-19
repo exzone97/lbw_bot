@@ -270,7 +270,7 @@ public class KitchenSinkController {
 				if(!bossStat){
 					index_1 = text.indexOf( ' ' );
 					String key = text.substring(0,index_1);
-					
+					String r = "";
 					if(storedText.containsKey(key)){
 						r = storedText.get(key)+"";
 					}
