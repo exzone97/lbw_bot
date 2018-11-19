@@ -1,18 +1,18 @@
 /*
- * Copyright 2016 LINE Corporation
- *
- * LINE Corporation licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at:
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- */
+* Copyright 2016 LINE Corporation
+*
+* LINE Corporation licenses this file to you under the Apache License,
+* version 2.0 (the "License"); you may not use this file except in compliance
+* with the License. You may obtain a copy of the License at:
+*
+*   http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing, software
+* distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+* WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+* License for the specific language governing permissions and limitations
+* under the License.
+*/
 
 package com.example.bot.spring;
 
@@ -44,7 +44,7 @@ import java.nio.charset.Charset;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.InputStream;
-import java.net.MalformedURLException; 
+import java.net.MalformedURLException;
 import java.net.UnknownServiceException;
 
 import org.jsoup.Jsoup;
@@ -155,8 +155,8 @@ public class KitchenSinkController {
     private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
         try {
             BotApiResponse apiResponse = lineMessagingClient
-                    .replyMessage(new ReplyMessage(replyToken, messages))
-                    .get();
+            .replyMessage(new ReplyMessage(replyToken, messages))
+            .get();
             log.info("Sent messages: {}", apiResponse);
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
@@ -174,159 +174,169 @@ public class KitchenSinkController {
     }
 
     private void handleHeavyContent(String replyToken, String messageId,
-                                    Consumer<MessageContentResponse> messageConsumer) {
+    Consumer<MessageContentResponse> messageConsumer) {
         final MessageContentResponse response;
         try {
             response = lineMessagingClient.getMessageContent(messageId)
-                                          .get();
+            .get();
         } catch (InterruptedException | ExecutionException e) {
             reply(replyToken, new TextMessage("Cannot get image: " + e.getMessage()));
             throw new RuntimeException(e);
         }
         messageConsumer.accept(response);
     }
-	
-	HashMap<String,String> storedText = new HashMap<String,String>();
-	boolean bossStat = false;
-	
-	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
-            throws Exception {
-        
-		String text = content.getText();
-        int index_1 = text.indexOf(' ');
-        String t = text.substring(0, index_1);
-        text = text.substring(index_1 + 1, text.length());
-		
+
+    HashMap<String,String> storedText = new HashMap<String,String>();
+    boolean bossStat = false;
+
+    private void handleTextContent(String replyToken, Event event, TextMessageContent content)
+    throws Exception {
+
+
+        String text = content.getText();
+        String[] tArr = text.split(" ");
+        String t = tArr[0].toLowerCase();
+        log.info("Got text message from {}: {}", replyToken, text);
         switch (t) {
-			case "Boss": {
-				bossStat = true;
-				String url = "https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Frss.detik.com%2Findex.php%2Fdetikcom";
-				URL obj = new URL(url);
-				HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-				con.setRequestMethod("GET");
-				BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream() , "UTF-8"));
-				String inputLine;
-				StringBuilder response = new StringBuilder();
-				while ((inputLine = in.readLine()) != null){
-					response.append(inputLine);
-				}
-				in.close();
-				JSONObject myResponse = new JSONObject(response.toString());
-				String aa = myResponse.get("items").toString();
-				String bb = aa.substring(1, aa.length() - 1);
-				JSONObject jj = new JSONObject(bb);
-				String m = jj.getString("link");
-				Document doc = Jsoup.connect(m).get();
-				Elements links = doc.select("#detikdetailtext");
-				String message = "";
-				LinkedList<Message> messages = new LinkedList<Message>();
-        for (Element link : links) {
-            if (link.attr("id").equalsIgnoreCase("detikdetailtext")) {
-                message = doc.select("#detikdetailtext").text();
-				messages.add(new TextMessage(message));
-                if (doc.select("#detikdetailtext .lihatjg").isEmpty()) {
-                } else {
-                    String t2 = doc.select("#detikdetailtext .lihatjg").text();
-                    String[] tx = t.split(t2);
-					messages.add(new TextMessage(tx[0]));
-					messages.add(new TextMessage(tx[tx.length - 1]));
+            case "mute": {
+                if(!bossStat){
+                    muteMode = true;
+                    this.replyText(replyToken,"cleverbot ngga bakal respon lagi. 'unmute' untuk mengaktifkan kembali cleverbot.");
+                }
+                break;
+            }
+            case "unmute": {
+                if(!bossStat){
+                    muteMode = false;
+                    this.replyText(replyToken,"cleverbot bakal respon lagi. 'mute' untuk menonaktifkan sementara cleverbot.");
+                }
+                break;
+            }
+            case "boss": {
+                bossStat = true;
+                muteMode = false;
+                String url = "https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Frss.detik.com%2Findex.php%2Fdetikcom";
+                URL obj = new URL(url);
+                HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+                con.setRequestMethod("GET");
+                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream() , "UTF-8"));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+                while ((inputLine = in.readLine()) != null){
+                    response.append(inputLine);
+                }
+                in.close();
+                JSONObject myResponse = new JSONObject(response.toString());
+                String aa = myResponse.get("items").toString();
+                String bb = aa.substring(1, aa.length() - 1);
+                JSONObject jj = new JSONObject(bb);
+                String m = jj.getString("link");
+                Document doc = Jsoup.connect(m).get();
+                Elements links = doc.select("#detikdetailtext");
+                String message = "";
+                LinkedList<Message> messages = new LinkedList<Message>();
+                for (Element link : links) {
+                    if (link.attr("id").equalsIgnoreCase("detikdetailtext")) {
+                        message = doc.select("#detikdetailtext").text();
+                        messages.add(new TextMessage(message));
+                        if (doc.select("#detikdetailtext .lihatjg").isEmpty()) {
+                        } else {
+                            String t2 = doc.select("#detikdetailtext .lihatjg").text();
+                            String[] tx = t.split(t2);
+                            messages.add(new TextMessage(tx[0]));
+                            messages.add(new TextMessage(tx[tx.length - 1]));
+                        }
+
+                    }
                 }
 
+                this.reply(
+                replyToken,
+                messages
+                );
+
+                break;
             }
-        }				
-				this.reply(
-                        replyToken,
-                        messages
-					);
-				
+            case "noboss": {
+                bossStat = false;
+                this.replyText(replyToken,"OK bosqu");
                 break;
-			}
-			case "Noboss": {
-				bossStat = false;
-				this.replyText(replyToken,"OK");
-				break;
-			}
-			case "Save": {
-				if(!bossStat){
-					if(text.indexOf( ' ' )<0){
-						this.replyText(replyToken,"Data yang diberikan kurang lengkap");
-					}
-					else{
-						index_1 = text.indexOf( ' ' );
-						String key = text.substring(0,index_1);
-						text = text.substring(index_1+1,text.length());
-                                                
-						String value = text.substring(0,index_1);
-					
-						storedText.put(key,value);
-						
-						this.replyText(replyToken,"OK");
-					}
-					
-				}
-				break;
-			}
-			case "Load": {
-				if(!bossStat){
-					index_1 = text.indexOf( ' ' );
-					String key = text.substring(0,index_1);
-					String r = "";
-					if(storedText.containsKey(key)){
-						r = storedText.get(key)+"";
-					}
-					else{
-						r = "Kunci Pencarian Tidak Ditemukan";
-					}
-				}
+            }
+            case "save": {
+                if(!bossStat){
+                    if(tArr.length<3){
+                        this.replyText(replyToken,"data yang mau disimpan belum ada bosqu");
+                    }
+                    else{
+                        String inputText = "";
+                        for(int i = 2;i<tArr.length;i++){
+                            inputText += tArr[i]+" ";
+                        }
+                        storedText.put(tArr[1],inputText);
+                        this.replyText(replyToken,"siap bosqu");
+                    }
+
+                }
                 break;
-			}
-            case "Profile": {
+            }
+            case "load": {
+                if(!bossStat){
+                    String r = "";
+                    if(storedText.containsKey(tArr[1])){
+                        r = storedText.get(tArr[1])+"";
+                    }
+                    else{
+                        r = "kunci ngga ketemu bosqu";
+                    }
+                    this.replyText(replyToken,r);
+                }
+                break;
+            }
+            case "profile": {
                 String userId = event.getSource().getUserId();
                 if (userId != null) {
                     lineMessagingClient
-                            .getProfile(userId)
-                            .whenComplete((profile, throwable) -> {
-                                if (throwable != null) {
-                                    this.replyText(replyToken, throwable.getMessage());
-                                    return;
-                                }
+                    .getProfile(userId)
+                    .whenComplete((profile, throwable) -> {
+                        if (throwable != null) {
+                            this.replyText(replyToken, throwable.getMessage());
+                            return;
+                        }
 
-                                this.reply(
-                                        replyToken,
-                                        Arrays.asList(new TextMessage(
-                                                              "Display name: " + profile.getDisplayName()),
-                                                      new TextMessage("Status message: "
-                                                                      + profile.getStatusMessage()))
-                                );
+                        this.reply(
+                        replyToken,
+                        Arrays.asList(new TextMessage(
+                        "Display name: " + profile.getDisplayName()),
+                        new TextMessage("Status message: "
+                        + profile.getStatusMessage()))
+                        );
 
-                            });
+                    });
                 } else {
-                    this.replyText(replyToken, "User ID tidak");
+                    this.replyText(replyToken, "Bot can't use profile API without user ID");
                 }
                 break;
             }
-            case "Bye": {
+            case "bye": {
                 Source source = event.getSource();
                 if (source instanceof GroupSource) {
-                    this.replyText(replyToken, "Byeee");
+                    this.replyText(replyToken, "Leaving group");
                     lineMessagingClient.leaveGroup(((GroupSource) source).getGroupId()).get();
                 } else if (source instanceof RoomSource) {
-                    this.replyText(replyToken, "Byeee");
+                    this.replyText(replyToken, "Leaving room");
                     lineMessagingClient.leaveRoom(((RoomSource) source).getRoomId()).get();
                 } else {
-                    this.replyText(replyToken, "Tidak dapat meninggalkan chat 1:1");
+                    this.replyText(replyToken, "Bot can't leave from 1:1 chat");
                 }
                 break;
             }
-            
-            default: 
-				//buat helper
-					break;
-			
-			}
-                
+            default:
+            if(!muteMode){
+                break;
+            }
         }
-    
+    }
+
 
     private static String createUri(String path) {
         return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
@@ -364,8 +374,8 @@ public class KitchenSinkController {
         Path tempFile = KitchenSinkApplication.downloadedContentDir.resolve(fileName);
         tempFile.toFile().deleteOnExit();
         return new DownloadedContent(
-                tempFile,
-                createUri("/downloaded/" + tempFile.getFileName()));
+        tempFile,
+        createUri("/downloaded/" + tempFile.getFileName()));
     }
 
     @Value
