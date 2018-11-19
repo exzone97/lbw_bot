@@ -319,18 +319,17 @@ public class KitchenSinkController {
                 break;
             }
             
-            default:
+            default: 
 				//buat helper
 					break;
-				}
+			
+			}
                 
         }
-    }
+    
 
     private static String createUri(String path) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath()
-                                          .path(path).build()
-                                          .toUriString();
+        return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
     }
 
     private void system(String... args) {
