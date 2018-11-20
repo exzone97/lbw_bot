@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="3.0.1" sequence="0" timestamp="1510016036861" analysisTimestamp="1510016037007" release="">
+  <Project projectName="">
+    <Jar>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\build\classes\java\main</Jar>
+    <AuxClasspathEntry>C:\Users\asus-pc\line-bot-sdk-java\line-bot-model\build\libs\line-bot-model-1.11.0-SNAPSHOT.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.datatype\jackson-datatype-jsr310\2.8.9\60f4378b6547d19297add60b9e4678399fe6033\jackson-datatype-jsr310-2.8.9.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\converter-jackson\2.3.0\121335a74bc432ab7a3caa5a84548fc9b5915a54\converter-jackson-2.3.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-databind\2.8.9\4dfca3975be3c1a98eacb829e70f02e9a71bc159\jackson-databind-2.8.9.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-core\2.8.9\569b1752705da98f49aabe2911cc956ff7d8ed9d\jackson-core-2.8.9.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\logging-interceptor\3.8.1\feab46062803513d6a8307c74b0084265855de1a\logging-interceptor-3.8.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\retrofit\2.3.0\bcacde6a8ccedcc56c127403d26b76072fe6214d\retrofit-2.3.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\org.projectlombok\lombok\1.16.18\557d13dcb647038dc687390711ccb5c9b3ffbd60\lombok-1.16.18.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-configuration-processor\1.5.6.RELEASE\ec2ba3f9428974d7c2efe6921c72228a13f7da74\spring-boot-configuration-processor-1.5.6.RELEASE.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-annotations\2.8.0\45b426f7796b741035581a176744d91090e2e6fb\jackson-annotations-2.8.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.8.1\4d060ca3190df0eda4dc13415532a12e15ca5f11\okhttp-3.8.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.vaadin.external.google\android-json\0.0.20131108.vaadin1\fa26d351fe62a6a17f5cda1287c1c6110dec413f\android-json-0.0.20131108.vaadin1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.13.0\a9283170b7305c8d92d25aff02a6ab7e45d06cbe\okio-1.13.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\org.slf4j\slf4j-api\1.7.25\da76ca59f6a57ee3102f8f9bd9cee742973efa8a\slf4j-api-1.7.25.jar</AuxClasspathEntry>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\ChannelTokenSupplier.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\exception\BadRequestException.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\exception\ForbiddenException.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\exception\GeneralLineMessagingException.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\exception\LineMessagingException.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\exception\LineServerException.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\exception\TooManyRequestsException.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\exception\UnauthorizedException.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\ExceptionConverter.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\FixedChannelTokenSupplier.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\HeaderInterceptor.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\LineMessagingClient.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\LineMessagingClientBuilder.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\LineMessagingClientImpl.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\LineMessagingService.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\LineMessagingServiceBuilder.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\LineSignatureValidator.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\src\main\java\com\linecorp\bot\client\MessageContentResponse.java</SrcDir>
+  </Project>
+  <Errors errors="0" missingClasses="0"></Errors>
+  <FindBugsSummary timestamp="Tue, 7 Nov 2017 07:53:56 +0700" total_classes="21" referenced_classes="164" total_bugs="0" total_size="391" num_packages="2" java_version="1.8.0_121" vm_version="25.121-b13" cpu_seconds="23.20" clock_seconds="12.36" peak_mbytes="178.38" alloc_mbytes="839.50" gc_seconds="0.23">
+    <PackageStats package="com.linecorp.bot.client" total_bugs="0" total_types="14" total_size="349">
+      <ClassStats class="com.linecorp.bot.client.ChannelTokenSupplier" sourceFile="ChannelTokenSupplier.java" interface="true" size="1" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.ExceptionConverter" sourceFile="ExceptionConverter.java" interface="false" size="25" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.FixedChannelTokenSupplier" sourceFile="FixedChannelTokenSupplier.java" interface="false" size="10" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.HeaderInterceptor" sourceFile="HeaderInterceptor.java" interface="false" size="16" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.LineMessagingClient" sourceFile="LineMessagingClient.java" interface="true" size="16" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.LineMessagingClientBuilder" sourceFile="LineMessagingClientBuilder.java" interface="false" size="46" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.LineMessagingClientImpl" sourceFile="LineMessagingClientImpl.java" interface="false" size="41" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.LineMessagingClientImpl$CallbackAdaptor" sourceFile="LineMessagingClientImpl.java" interface="false" size="12" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.LineMessagingClientImpl$ResponseBodyCallbackAdaptor" sourceFile="LineMessagingClientImpl.java" interface="false" size="25" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.LineMessagingService" sourceFile="LineMessagingService.java" interface="true" size="10" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.LineMessagingServiceBuilder" sourceFile="LineMessagingServiceBuilder.java" interface="false" size="92" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.LineSignatureValidator" sourceFile="LineSignatureValidator.java" interface="false" size="21" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.MessageContentResponse" sourceFile="MessageContentResponse.java" interface="false" size="21" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.MessageContentResponse$MessageContentResponseBuilder" sourceFile="MessageContentResponse.java" interface="false" size="13" bugs="0"/>
+    </PackageStats>
+    <PackageStats package="com.linecorp.bot.client.exception" total_bugs="0" total_types="7" total_size="42">
+      <ClassStats class="com.linecorp.bot.client.exception.BadRequestException" sourceFile="BadRequestException.java" interface="false" size="5" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.exception.ForbiddenException" sourceFile="ForbiddenException.java" interface="false" size="5" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.exception.GeneralLineMessagingException" sourceFile="GeneralLineMessagingException.java" interface="false" size="5" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.exception.LineMessagingException" sourceFile="LineMessagingException.java" interface="false" size="12" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.exception.LineServerException" sourceFile="LineServerException.java" interface="false" size="5" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.exception.TooManyRequestsException" sourceFile="TooManyRequestsException.java" interface="false" size="5" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.client.exception.UnauthorizedException" sourceFile="UnauthorizedException.java" interface="false" size="5" bugs="0"/>
+    </PackageStats>
+    <FindBugsProfile>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassDataAnalysisEngine" totalMilliseconds="6907" invocations="1005" avgMicrosecondsPerInvocation="6873" maxMicrosecondsPerInvocation="584327" standardDeviationMircosecondsPerInvocation="41254"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassInfoAnalysisEngine" totalMilliseconds="598" invocations="1001" avgMicrosecondsPerInvocation="598" maxMicrosecondsPerInvocation="36807" standardDeviationMircosecondsPerInvocation="1851"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.MethodGenFactory" totalMilliseconds="424" invocations="117" avgMicrosecondsPerInvocation="3624" maxMicrosecondsPerInvocation="405076" standardDeviationMircosecondsPerInvocation="37274"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FieldItemSummary" totalMilliseconds="299" invocations="164" avgMicrosecondsPerInvocation="1828" maxMicrosecondsPerInvocation="43593" standardDeviationMircosecondsPerInvocation="5083"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.IsNullValueDataflowFactory" totalMilliseconds="277" invocations="97" avgMicrosecondsPerInvocation="2859" maxMicrosecondsPerInvocation="211728" standardDeviationMircosecondsPerInvocation="21330"/>
+    </FindBugsProfile>
+  </FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History></History>
+</BugCollection>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<BugCollection version="3.0.1" sequence="0" timestamp="1510016084325" analysisTimestamp="1510016084359" release="">
+  <Project projectName="">
+    <Jar>C:\Users\asus-pc\line-bot-sdk-java\line-bot-servlet\build\classes\java\main</Jar>
+    <AuxClasspathEntry>C:\Users\asus-pc\line-bot-sdk-java\line-bot-api-client\build\libs\line-bot-api-client-1.11.0-SNAPSHOT.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\line-bot-sdk-java\line-bot-model\build\libs\line-bot-model-1.11.0-SNAPSHOT.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.datatype\jackson-datatype-jsr310\2.8.9\60f4378b6547d19297add60b9e4678399fe6033\jackson-datatype-jsr310-2.8.9.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\converter-jackson\2.3.0\121335a74bc432ab7a3caa5a84548fc9b5915a54\converter-jackson-2.3.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-databind\2.8.9\4dfca3975be3c1a98eacb829e70f02e9a71bc159\jackson-databind-2.8.9.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.google.guava\guava\23.0\c947004bb13d18182be60077ade044099e4f26f1\guava-23.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\org.projectlombok\lombok\1.16.18\557d13dcb647038dc687390711ccb5c9b3ffbd60\lombok-1.16.18.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\org.springframework.boot\spring-boot-configuration-processor\1.5.6.RELEASE\ec2ba3f9428974d7c2efe6921c72228a13f7da74\spring-boot-configuration-processor-1.5.6.RELEASE.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-core\2.8.9\569b1752705da98f49aabe2911cc956ff7d8ed9d\jackson-core-2.8.9.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\logging-interceptor\3.8.1\feab46062803513d6a8307c74b0084265855de1a\logging-interceptor-3.8.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.squareup.retrofit2\retrofit\2.3.0\bcacde6a8ccedcc56c127403d26b76072fe6214d\retrofit-2.3.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-annotations\2.8.0\45b426f7796b741035581a176744d91090e2e6fb\jackson-annotations-2.8.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.2\25ea2e8b0c338a877313bd4672d3fe056ea78f0d\jsr305-3.0.2.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.google.errorprone\error_prone_annotations\2.0.18\5f65affce1684999e2f4024983835efc3504012e\error_prone_annotations-2.0.18.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.google.j2objc\j2objc-annotations\1.1\ed28ded51a8b1c6b112568def5f4b455e6809019\j2objc-annotations-1.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\org.codehaus.mojo\animal-sniffer-annotations\1.14\775b7e22fb10026eed3f86e8dc556dfafe35f2d5\animal-sniffer-annotations-1.14.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.vaadin.external.google\android-json\0.0.20131108.vaadin1\fa26d351fe62a6a17f5cda1287c1c6110dec413f\android-json-0.0.20131108.vaadin1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.8.1\4d060ca3190df0eda4dc13415532a12e15ca5f11\okhttp-3.8.1.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.13.0\a9283170b7305c8d92d25aff02a6ab7e45d06cbe\okio-1.13.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\javax.servlet\javax.servlet-api\3.1.0\3cd63d075497751784b2fa84be59432f4905bf7c\javax.servlet-api-3.1.0.jar</AuxClasspathEntry>
+    <AuxClasspathEntry>C:\Users\asus-pc\.gradle\caches\modules-2\files-2.1\org.slf4j\slf4j-api\1.7.25\da76ca59f6a57ee3102f8f9bd9cee742973efa8a\slf4j-api-1.7.25.jar</AuxClasspathEntry>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-servlet\src\main\java\com\linecorp\bot\servlet\LineBotCallbackException.java</SrcDir>
+    <SrcDir>C:\Users\asus-pc\line-bot-sdk-java\line-bot-servlet\src\main\java\com\linecorp\bot\servlet\LineBotCallbackRequestParser.java</SrcDir>
+  </Project>
+  <Errors errors="0" missingClasses="0"></Errors>
+  <FindBugsSummary timestamp="Tue, 7 Nov 2017 07:54:44 +0700" total_classes="2" referenced_classes="50" total_bugs="0" total_size="37" num_packages="1" java_version="1.8.0_121" vm_version="25.121-b13" cpu_seconds="9.61" clock_seconds="2.98" peak_mbytes="180.95" alloc_mbytes="839.50" gc_seconds="0.07">
+    <PackageStats package="com.linecorp.bot.servlet" total_bugs="0" total_types="2" total_size="37">
+      <ClassStats class="com.linecorp.bot.servlet.LineBotCallbackException" sourceFile="LineBotCallbackException.java" interface="false" size="5" bugs="0"/>
+      <ClassStats class="com.linecorp.bot.servlet.LineBotCallbackRequestParser" sourceFile="LineBotCallbackRequestParser.java" interface="false" size="32" bugs="0"/>
+    </PackageStats>
+    <FindBugsProfile>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassDataAnalysisEngine" totalMilliseconds="747" invocations="750" avgMicrosecondsPerInvocation="996" maxMicrosecondsPerInvocation="23468" standardDeviationMircosecondsPerInvocation="1227"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.ClassInfoAnalysisEngine" totalMilliseconds="495" invocations="747" avgMicrosecondsPerInvocation="663" maxMicrosecondsPerInvocation="37645" standardDeviationMircosecondsPerInvocation="1918"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FieldItemSummary" totalMilliseconds="165" invocations="50" avgMicrosecondsPerInvocation="3301" maxMicrosecondsPerInvocation="35721" standardDeviationMircosecondsPerInvocation="6722"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.FindNoSideEffectMethods" totalMilliseconds="102" invocations="50" avgMicrosecondsPerInvocation="2050" maxMicrosecondsPerInvocation="18988" standardDeviationMircosecondsPerInvocation="3697"/>
+      <ClassProfile name="edu.umd.cs.findbugs.OpcodeStack$JumpInfoFactory" totalMilliseconds="97" invocations="158" avgMicrosecondsPerInvocation="617" maxMicrosecondsPerInvocation="7593" standardDeviationMircosecondsPerInvocation="1047"/>
+      <ClassProfile name="edu.umd.cs.findbugs.util.TopologicalSort" totalMilliseconds="84" invocations="706" avgMicrosecondsPerInvocation="119" maxMicrosecondsPerInvocation="2623" standardDeviationMircosecondsPerInvocation="215"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.JavaClassAnalysisEngine" totalMilliseconds="68" invocations="91" avgMicrosecondsPerInvocation="754" maxMicrosecondsPerInvocation="26841" standardDeviationMircosecondsPerInvocation="3060"/>
+      <ClassProfile name="edu.umd.cs.findbugs.classfile.engine.bcel.MethodGenFactory" totalMilliseconds="60" invocations="6" avgMicrosecondsPerInvocation="10166" maxMicrosecondsPerInvocation="57350" standardDeviationMircosecondsPerInvocation="21105"/>
+      <ClassProfile name="edu.umd.cs.findbugs.detect.NoteDirectlyRelevantTypeQualifiers" totalMilliseconds="53" invocations="50" avgMicrosecondsPerInvocation="1060" maxMicrosecondsPerInvocation="17501" standardDeviationMircosecondsPerInvocation="2642"/>
+    </FindBugsProfile>
+  </FindBugsSummary>
+  <ClassFeatures></ClassFeatures>
+  <History></History>
+</BugCollection>
