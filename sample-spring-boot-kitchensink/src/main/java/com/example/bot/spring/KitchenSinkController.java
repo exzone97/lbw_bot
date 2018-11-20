@@ -186,17 +186,12 @@ public class KitchenSinkController {
         messageConsumer.accept(response);
     }
 
-    private void handleSticker(String replyToken, StickerMessageContent content) {
-        reply(replyToken, new StickerMessage(
-        content.getPackageId(), content.getStickerId())
-        );
-    }
-
     HashMap<String,String> storedText = new HashMap<String,String>();
     boolean bossStat = false;
 
     private void handleTextContent(String replyToken, Event event, TextMessageContent content)
     throws Exception {
+
 
         String text = content.getText();
         String[] tArr = text.split(" ");
@@ -307,13 +302,13 @@ public class KitchenSinkController {
             case "bye": {
                 Source source = event.getSource();
                 if (source instanceof GroupSource) {
-                    this.replyText(replyToken, "Byeee");
+                    this.replyText(replyToken, "Leaving group");
                     lineMessagingClient.leaveGroup(((GroupSource) source).getGroupId()).get();
                 } else if (source instanceof RoomSource) {
-                    this.replyText(replyToken, "Byeee");
+                    this.replyText(replyToken, "Leaving room");
                     lineMessagingClient.leaveRoom(((RoomSource) source).getRoomId()).get();
                 } else {
-                    this.replyText(replyToken, "Tidak dapat meninggalkan chat 1:1");
+                    this.replyText(replyToken, "Bot can't leave from 1:1 chat");
                 }
                 break;
             }
