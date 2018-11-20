@@ -322,27 +322,27 @@ public class KitchenSinkController {
             }
 			case "calc": {
                 if (!bossStat) {
-                    double result;
+                    double result = 0;
                     if (tArr.length < 4) {
                         this.replyText(replyToken, "calc [operand1][spasi][operator][spasi][operand2]");
                     } else {
                         if (tArr[2].equals("+")) {
-                            result = Integer.parseInt(tArr[1]) + Integer.parseInt(tArr[3]);
+                            result = Double.parseDouble(tArr[1]) + Double.parseDouble(tArr[3]);
                             this.replyText(replyToken, result + "");
                         } else if (tArr[2].equals("-")) {
-                            result = Integer.parseInt(tArr[1]) - Integer.parseInt(tArr[3]);
+                            result = Double.parseDouble(tArr[1]) - Double.parseDouble(tArr[3]);
                             this.replyText(replyToken, result + "");
                         } else if (tArr[2].equals("*")) {
-                            result = Integer.parseInt(tArr[1]) * Integer.parseInt(tArr[3]);
+                            result = Double.parseDouble(tArr[1]) * Double.parseDouble(tArr[3]);
                             this.replyText(replyToken, result + "");
                         } else if (tArr[2].equals("/")) {
-							// if(tArr[3].equals("0")){
-								// this.replyText(replyToken, "Penyebut tidak boleh 0");
-							// }
-							// else{
-								result = Integer.parseInt(tArr[1]) / Integer.parseInt(tArr[3]);
+							if(tArr[3].equals("0")){
+								this.replyText(replyToken, "Penyebut tidak boleh 0");
+							}
+							else{
+								result = Double.parseDouble(tArr[1]) / Double.parseDouble(tArr[3]);
 								this.replyText(replyToken, result + "");
-							// }
+							}
                         } else {
                             this.replyText(replyToken, "Operator salah");
                         }
