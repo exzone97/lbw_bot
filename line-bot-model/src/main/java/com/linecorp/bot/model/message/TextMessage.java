@@ -16,20 +16,37 @@
 
 package com.linecorp.bot.model.message;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+import com.linecorp.bot.model.message.quickreply.QuickReply;
+
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Value;
 
 @Value
+@Builder(toBuilder = true)
 @JsonTypeName("text")
+@RequiredArgsConstructor
+@JsonDeserialize(builder = TextMessage.TextMessageBuilder.class)
 public class TextMessage implements Message {
+    @NonNull
     private final String text;
+    private final QuickReply quickReply;
 
-    @JsonCreator
-    // Constructor which has only one argument needs Jackson Annotation.
-    // see MessageJsonReconstructionTest for detail.
+    /**
+     * Constructor without {@link #quickReply} parameter.
+     *
+     * <p>If you want use {@link QuickReply}, please use {@link #builder()} instead.
+     */
     public TextMessage(final String text) {
         this.text = text;
+        this.quickReply = null;
     }
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public static class TextMessageBuilder {}
 }

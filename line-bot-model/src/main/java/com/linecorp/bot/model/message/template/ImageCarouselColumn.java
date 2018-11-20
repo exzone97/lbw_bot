@@ -18,31 +18,31 @@ package com.linecorp.bot.model.message.template;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.linecorp.bot.model.action.Action;
+
 import lombok.Value;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
- * Column object for carousel template
+ * Column object for carousel template.
  */
 @Value
 public class ImageCarouselColumn {
     /**
-     * Image URL
+     * Image URL.
+     *
      * <ul>
-     *     <li>Max 1000 characters HTTPS URL</li>
-     *     <li>JPEG or PNG</li>
-     *     <li>Aspect ratio: 1:1</li>
-     *     <li>Max width: 1024px</li>
-     *     <li>Max: 1 MB</li>
+     * <li>Max 1000 characters HTTPS URL</li>
+     * <li>JPEG or PNG</li>
+     * <li>Aspect ratio: 1:1</li>
+     * <li>Max width: 1024px</li>
+     * <li>Max: 1 MB</li>
      * </ul>
      */
     private final String imageUrl;
 
     /**
-     * Action when tapped
+     * Action when tapped.
      */
     private final Action action;
 

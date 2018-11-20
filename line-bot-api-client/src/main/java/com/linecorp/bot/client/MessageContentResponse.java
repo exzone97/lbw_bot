@@ -38,9 +38,10 @@ public class MessageContentResponse implements AutoCloseable {
     /** File contents type represented by MIME. */
     final String mimeType;
 
-    /** All HTTP headers of API response.
+    /**
+     * All HTTP headers of API response.
      *
-     * Note: there are no SPEC for those headers.
+     * <p>Note: there are no SPEC for those headers.
      * Current field values are provided AS-IS and can be changed/removed without announces.
      */
     final Map<String, List<String>> allHeaders;

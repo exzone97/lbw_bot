@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/line/line-bot-sdk-java.svg?branch=master)](https://travis-ci.org/line/line-bot-sdk-java)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.linecorp.bot/line-bot-model/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.linecorp.bot/line-bot-model)
 [![javadoc.io](https://javadocio-badges.herokuapp.com/com.linecorp.bot/line-bot-model/badge.svg)](https://javadocio-badges.herokuapp.com/com.linecorp.bot/line-bot-model)
+[![codecov](https://codecov.io/gh/line/line-bot-sdk-java/branch/master/graph/badge.svg)](https://codecov.io/gh/line/line-bot-sdk-java)
 
 
 ## What is this?
@@ -19,8 +20,8 @@ http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.linecorp.bot%22
 
 See the official API documentation for more information.
 
-English: https://devdocs.line.me/en/
-Japanese: https://devdocs.line.me/ja/
+- English: https://developers.line.me/en/docs/messaging-api/reference/
+- Japanese: https://developers.line.me/ja/docs/messaging-api/reference/
 
 ## Spring Boot integration
 

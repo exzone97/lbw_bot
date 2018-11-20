@@ -1,3 +1,19 @@
+/*
+ * Copyright 2018 LINE Corporation
+ *
+ * LINE Corporation licenses this file to you under the Apache License,
+ * version 2.0 (the "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at:
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations
+ * under the License.
+ */
+
 package com.linecorp.bot.spring.boot.support;
 
 import static java.util.Collections.singletonList;
@@ -25,7 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Internal class to send message as reply.
  *
- * Basically, message contents are from return value of handler method.
+ * <p>Basically, message contents are from return value of handler method.
  *
  * @see LineMessageHandlerSupport#handleReturnValue(Event, Object)
  */
@@ -36,11 +52,11 @@ class ReplyByReturnValueConsumer implements Consumer<Object> {
     private final Event originalEvent;
 
     @Component
-    public static class Factory {
+    static class Factory {
         private final LineMessagingClient lineMessagingClient;
 
         @Autowired
-        public Factory(final LineMessagingClient lineMessagingClient) {
+        Factory(final LineMessagingClient lineMessagingClient) {
             this.lineMessagingClient = lineMessagingClient;
         }
 

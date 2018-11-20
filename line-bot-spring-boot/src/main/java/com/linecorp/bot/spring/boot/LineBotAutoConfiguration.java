@@ -16,28 +16,23 @@
 
 package com.linecorp.bot.spring.boot;
 
-import java.nio.charset.StandardCharsets;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+import com.linecorp.bot.client.ChannelManagementSyncClient;
 import com.linecorp.bot.client.ChannelTokenSupplier;
 import com.linecorp.bot.client.FixedChannelTokenSupplier;
 import com.linecorp.bot.client.LineMessagingClient;
-import com.linecorp.bot.client.LineMessagingClientImpl;
-import com.linecorp.bot.client.LineMessagingServiceBuilder;
-import com.linecorp.bot.client.LineSignatureValidator;
-import com.linecorp.bot.servlet.LineBotCallbackRequestParser;
-import com.linecorp.bot.spring.boot.interceptor.LineBotServerInterceptor;
-import com.linecorp.bot.spring.boot.support.LineBotServerArgumentProcessor;
 import com.linecorp.bot.spring.boot.support.LineMessageHandlerSupport;
 
+/**
+ * Also refers {@link LineBotWebMvcBeans} for web only beans definition.
+ */
 @Configuration
 @AutoConfigureAfter(LineBotWebMvcConfigurer.class)
 @EnableConfigurationProperties(LineBotProperties.class)
@@ -46,19 +41,10 @@ public class LineBotAutoConfiguration {
     @Autowired
     private LineBotProperties lineBotProperties;
 
-    @Bean
-    @SuppressWarnings("deprecation")
-    public com.linecorp.bot.client.LineMessagingService lineMessagingService(
-            final ChannelTokenSupplier channelTokenSupplier) {
-        return LineMessagingServiceBuilder
-                .create(channelTokenSupplier)
-                .apiEndPoint(lineBotProperties.getApiEndPoint())
-                .connectTimeout(lineBotProperties.getConnectTimeout())
-                .readTimeout(lineBotProperties.getReadTimeout())
-                .writeTimeout(lineBotProperties.getWriteTimeout())
-                .build();
-    }
-
+    /**
+     * Expose {@link FixedChannelTokenSupplier} as {@link Bean}
+     * in case of no other definition for {@link ChannelTokenSupplier} type.
+     */
     @Bean
     @ConditionalOnMissingBean(ChannelTokenSupplier.class)
     public ChannelTokenSupplier channelTokenSupplier() {
@@ -66,36 +52,28 @@ public class LineBotAutoConfiguration {
         return FixedChannelTokenSupplier.of(channelToken);
     }
 
+    /**
+     * Expose {@link LineMessagingClient} as {@link Bean}.
+     */
     @Bean
     public LineMessagingClient lineMessagingClient(
-            @SuppressWarnings("deprecation")
-            final com.linecorp.bot.client.LineMessagingService lineMessagingService) {
-        return new LineMessagingClientImpl(lineMessagingService);
+            final ChannelTokenSupplier channelTokenSupplier) {
+        return LineMessagingClient
+                .builder(channelTokenSupplier)
+                .apiEndPoint(lineBotProperties.getApiEndPoint())
+                .connectTimeout(lineBotProperties.getConnectTimeout())
+                .readTimeout(lineBotProperties.getReadTimeout())
+                .writeTimeout(lineBotProperties.getWriteTimeout())
+                .build();
     }
 
+    /**
+     * Expose {@link ChannelManagementSyncClient} as {@link Bean}.
+     */
     @Bean
-    @ConditionalOnWebApplication
-    public LineBotServerArgumentProcessor lineBotServerArgumentProcessor() {
-        return new LineBotServerArgumentProcessor();
-    }
-
-    @Bean
-    @ConditionalOnWebApplication
-    public LineBotServerInterceptor lineBotServerInterceptor() {
-        return new LineBotServerInterceptor();
-    }
-
-    @Bean
-    @ConditionalOnWebApplication
-    public LineSignatureValidator lineSignatureValidator() {
-        return new LineSignatureValidator(
-                lineBotProperties.getChannelSecret().getBytes(StandardCharsets.US_ASCII));
-    }
-
-    @Bean
-    @ConditionalOnWebApplication
-    public LineBotCallbackRequestParser lineBotCallbackRequestParser(
-            LineSignatureValidator lineSignatureValidator) {
-        return new LineBotCallbackRequestParser(lineSignatureValidator);
+    public ChannelManagementSyncClient channelManagementClient(
+            final ChannelTokenSupplier channelTokenSupplier) {
+        return ChannelManagementSyncClient.builder(channelTokenSupplier)
+                                          .build();
     }
 }
