@@ -336,7 +336,7 @@ public class KitchenSinkController {
                             result = Integer.parseInt(tArr[1]) * Integer.parseInt(tArr[3]);
                             this.replyText(replyToken, result + "");
                         } else if (tArr[2].equals("/")) {
-							if(tArr[3]==0){
+							if(tArr[3]=='0'){
 								this.replyText(replyToken, "Penyebut tidak boleh 0");
 							}
 							else{	
@@ -344,7 +344,7 @@ public class KitchenSinkController {
 								this.replyText(replyToken, result + "");
 							}
                         } else {
-                            this.replyToken(replyToken, "Operator salah");
+                            this.replyText(replyToken, "Operator salah");
                         }
                     }
                 }
