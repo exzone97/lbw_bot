@@ -17,49 +17,25 @@
 package com.linecorp.bot.model.message;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
-import com.linecorp.bot.model.message.quickreply.QuickReply;
-
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
 
 /**
- * Sticker message.
+ * Sticker message
  */
 @Value
-@Builder(toBuilder = true)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonTypeName("sticker")
-@JsonDeserialize(builder = StickerMessage.StickerMessageBuilder.class)
 public class StickerMessage implements Message {
     /**
-     * Package ID.
+     * Package ID
      */
     @NonNull
     private final String packageId;
 
     /**
-     * Sticker ID.
+     * Sticker ID
      */
     @NonNull
     private final String stickerId;
-
-    private final QuickReply quickReply;
-
-    /**
-     * Constructor without {@link #quickReply} parameter.
-     *
-     * <p>If you want use {@link QuickReply}, please use {@link #builder()} instead.
-     */
-    public StickerMessage(final String packageId, final String stickerId) {
-        this(packageId, stickerId, null);
-    }
-
-    @JsonPOJOBuilder(withPrefix = "")
-    public static class StickerMessageBuilder {}
 }

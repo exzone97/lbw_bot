@@ -29,13 +29,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
         property = "type"
 )
 @JsonSubTypes({
-        @JsonSubTypes.Type(CameraAction.class),
-        @JsonSubTypes.Type(CameraRollAction.class),
-        @JsonSubTypes.Type(DatetimePickerAction.class),
-        @JsonSubTypes.Type(LocationAction.class),
-        @JsonSubTypes.Type(MessageAction.class),
         @JsonSubTypes.Type(PostbackAction.class),
         @JsonSubTypes.Type(URIAction.class),
+        @JsonSubTypes.Type(MessageAction.class),
+        @JsonSubTypes.Type(DatetimePickerAction.class),
 })
 public interface Action {
     String getLabel();

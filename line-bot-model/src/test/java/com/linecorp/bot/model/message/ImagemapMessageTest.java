@@ -16,31 +16,33 @@
 
 package com.linecorp.bot.model.message;
 
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Collections;
 
 import org.junit.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import com.linecorp.bot.model.message.imagemap.ImagemapArea;
 import com.linecorp.bot.model.message.imagemap.ImagemapBaseSize;
 import com.linecorp.bot.model.message.imagemap.MessageImagemapAction;
-import com.linecorp.bot.model.testutil.TestUtil;
 
 public class ImagemapMessageTest {
     @Test
     public void test() throws JsonProcessingException {
-        ObjectMapper objectMapper = TestUtil.objectMapperWithProductionConfiguration(false);
-
-        ImagemapMessage imagemapMessage = ImagemapMessage
-                .builder()
-                .baseUrl("https://example.com")
-                .altText("hoge")
-                .baseSize(new ImagemapBaseSize(1040, 1040))
-                .actions(singletonList(new MessageImagemapAction("hoge", new ImagemapArea(0, 0, 20, 20))))
-                .build();
+        ObjectMapper objectMapper = new ObjectMapper()
+                .registerModule(new JavaTimeModule())
+                .configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
+        ImagemapMessage imagemapMessage = new ImagemapMessage(
+                "https://example.com", "hoge",
+                new ImagemapBaseSize(1040, 1040),
+                Collections.singletonList(
+                        new MessageImagemapAction("hoge",
+                                                  new ImagemapArea(0, 0, 20, 20))));
 
         String s = objectMapper.writeValueAsString(imagemapMessage);
         assertThat(s).contains("\"type\":\"imagemap\"");

@@ -16,8 +16,6 @@
 
 package com.linecorp.bot.client;
 
-import java.net.URI;
-
 import org.junit.After;
 import org.junit.Before;
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -42,13 +40,11 @@ public abstract class AbstractWiremockTest {
 
     protected MockWebServer mockWebServer;
     protected LineMessagingClient lineMessagingClient;
-    protected ChannelManagementSyncClient channelManagementSyncClient;
 
     @Before
     public void setUpWireMock() {
         mockWebServer = new MockWebServer();
         lineMessagingClient = createLineMessagingClient(mockWebServer);
-        channelManagementSyncClient = createChannelManagementSyncClient(mockWebServer);
     }
 
     @After
@@ -64,16 +60,11 @@ public abstract class AbstractWiremockTest {
                                  .setBody(ERROR_RESPONSE_READER.writeValueAsString(errorResponse)));
     }
 
-    protected LineMessagingClient createLineMessagingClient(final MockWebServer mockWebServer) {
-        return LineMessagingClient.builder("token")
-                                  .apiEndPoint("http://localhost:" + mockWebServer.getPort())
-                                  .build();
-    }
-
-    protected ChannelManagementSyncClient createChannelManagementSyncClient(final MockWebServer mockWebServer) {
-        return ChannelManagementSyncClient
-                .builder(() -> "token")
-                .apiEndPoint(URI.create("http://localhost:" + mockWebServer.getPort()))
-                .build();
+    protected LineMessagingClientImpl createLineMessagingClient(final MockWebServer mockWebServer) {
+        LineMessagingService lineMessagingService =
+                LineMessagingServiceBuilder.create("token")
+                                           .apiEndPoint("http://localhost:" + mockWebServer.getPort())
+                                           .build();
+        return new LineMessagingClientImpl(lineMessagingService);
     }
 }

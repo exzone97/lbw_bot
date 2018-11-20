@@ -46,10 +46,6 @@ public class LineBotServerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        if (!(handler instanceof HandlerMethod)) {
-            return true;
-        }
-
         HandlerMethod hm = (HandlerMethod) handler;
         MethodParameter[] methodParameters = hm.getMethodParameters();
         for (MethodParameter methodParameter : methodParameters) {

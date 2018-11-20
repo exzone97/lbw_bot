@@ -33,8 +33,7 @@ import com.linecorp.bot.model.event.source.Source;
         @JsonSubTypes.Type(JoinEvent.class),
         @JsonSubTypes.Type(LeaveEvent.class),
         @JsonSubTypes.Type(PostbackEvent.class),
-        @JsonSubTypes.Type(BeaconEvent.class),
-        @JsonSubTypes.Type(AccountLinkEvent.class)
+        @JsonSubTypes.Type(BeaconEvent.class)
 })
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -44,9 +43,13 @@ import com.linecorp.bot.model.event.source.Source;
         visible = true
 )
 public interface Event {
-    /** Get event source. */
+    /**
+     * Get event source
+     */
     Source getSource();
 
-    /** Time of the event. */
+    /**
+     * Time of the event
+     */
     Instant getTimestamp();
 }

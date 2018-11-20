@@ -36,7 +36,6 @@ public interface Source {
 
     /**
      * message/event sender id. It might be userId/roomId/roomId.
-     *
      * @return message/event sender id
      */
     String getSenderId();
