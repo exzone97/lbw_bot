@@ -19,7 +19,6 @@ package com.linecorp.bot.model.event;
 import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import com.linecorp.bot.model.event.source.Source;
@@ -33,19 +32,19 @@ import lombok.Value;
 @JsonTypeName("unfollow")
 public class UnfollowEvent implements Event {
     /**
-     * JSON object which contains the source of the event
+     * JSON object which contains the source of the event.
      */
     private final Source source;
 
     /**
-     * Time of the event
+     * Time of the event.
      */
     private final Instant timestamp;
 
     @JsonCreator
     public UnfollowEvent(
-            @JsonProperty("source") Source source,
-            @JsonProperty("timestamp") Instant timestamp) {
+            final Source source,
+            final Instant timestamp) {
         this.source = source;
         this.timestamp = timestamp;
     }

@@ -16,9 +16,13 @@
 
 package com.linecorp.bot.model.message;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
+
+import com.linecorp.bot.model.message.quickreply.QuickReply;
 
 /**
  * Interface of Message object.
@@ -43,6 +47,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
         @JsonSubTypes.Type(VideoMessage.class),
         @JsonSubTypes.Type(ImagemapMessage.class),
         @JsonSubTypes.Type(TemplateMessage.class),
+        @JsonSubTypes.Type(FlexMessage.class),
 })
 public interface Message {
+    @JsonInclude(Include.NON_NULL)
+    QuickReply getQuickReply();
 }

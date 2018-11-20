@@ -23,13 +23,17 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ErrorResponseTest {
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+            .setInjectableValues(new InjectableValues.Std().addValue("requestId", "requestId"));
+
     @Test
     public void simpleErrorResponseTest() throws IOException {
         // Do
-        final ErrorResponse result = new ObjectMapper()
+        final ErrorResponse result = OBJECT_MAPPER
                 .readValue(getSystemResourceAsStream("error/error401.json"),
                            ErrorResponse.class);
 
@@ -41,7 +45,7 @@ public class ErrorResponseTest {
     @Test
     public void complexErrorResponseTest() throws IOException {
         // Do
-        final ErrorResponse result = new ObjectMapper()
+        final ErrorResponse result = OBJECT_MAPPER
                 .readValue(getSystemResourceAsStream("error/error_with_detail.json"),
                            ErrorResponse.class);
 
@@ -50,8 +54,9 @@ public class ErrorResponseTest {
         assertThat(result.getDetails()).containsExactly(
                 new ErrorDetail("May not be empty",
                                 "messages[0].text"),
-                new ErrorDetail("Must be one of the following values: " +
-                                "[text, image, video, audio, location, sticker, richmessage, template, imagemap]",
+                new ErrorDetail("Must be one of the following values: "
+                                + "[text, image, video, audio, location, sticker,"
+                                + " richmessage, template, imagemap]",
                                 "messages[1].type"));
     }
 }

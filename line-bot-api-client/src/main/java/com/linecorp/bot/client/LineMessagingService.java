@@ -22,10 +22,16 @@ import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.profile.MembersIdsResponse;
 import com.linecorp.bot.model.profile.UserProfileResponse;
 import com.linecorp.bot.model.response.BotApiResponse;
+import com.linecorp.bot.model.richmenu.RichMenu;
+import com.linecorp.bot.model.richmenu.RichMenuIdResponse;
+import com.linecorp.bot.model.richmenu.RichMenuListResponse;
+import com.linecorp.bot.model.richmenu.RichMenuResponse;
 
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -33,72 +39,56 @@ import retrofit2.http.Query;
 import retrofit2.http.Streaming;
 
 /**
- * @deprecated Please use {@link LineMessagingClient} instead.
+ * Since 2018-06. This class is package private. Please use {@link LineMessagingClient} instead.
+ * It's implementation free.
  */
-@Deprecated
-public interface LineMessagingService {
+interface LineMessagingService {
     /**
-     * Reply to messages from users.
+     * Method for Retrofit.
      *
-     * <p>Webhooks are used to notify you when an event occurs. For events that you can respond to,
-     * a replyToken is issued for replying to messages.
-     * <p>Because the replyToken becomes invalid after a certain period of time,
-     * responses should be sent as soon as a message is received. Reply tokens can only be used once.
-     *
-     * @see #pushMessage(PushMessage)
-     * @see <a href="https://devdocs.line.me?java#reply-message">//devdocs.line.me#reply-message</a>
+     * @see LineMessagingClient#replyMessage(ReplyMessage)
      */
     @POST("v2/bot/message/reply")
     Call<BotApiResponse> replyMessage(@Body ReplyMessage replyMessage);
 
     /**
-     * Send messages to users when you want to.
+     * Method for Retrofit.
      *
-     * <p>INFO: Use of the Push Message API is limited to certain plans.
-     *
-     * @see #replyMessage(ReplyMessage)
-     * @see <a href="https://devdocs.line.me?java#push-message">//devdocs.line.me#push-message</a>
+     * @see LineMessagingClient#pushMessage(PushMessage)
      */
     @POST("v2/bot/message/push")
     Call<BotApiResponse> pushMessage(@Body PushMessage pushMessage);
 
     /**
-     * Send messages to multiple users at any time. <strong>IDs of groups or rooms cannot be used.</strong>
+     * Method for Retrofit.
      *
-     * <p>INFO: Only available for plans which support push messages. Messages cannot be sent to groups or rooms.
-     * <p>INFO: Use IDs returned via the webhook event of source users. IDs of groups or rooms cannot be used.
-     * Do not use the LINE ID found on the LINE app.</p>
-     * @see #pushMessage(PushMessage)
-     * @see <a href="https://devdocs.line.me?java#multicast">//devdocs.line.me#multicast</a>
+     * @see LineMessagingClient#multicast(Multicast)
      */
     @POST("v2/bot/message/multicast")
     Call<BotApiResponse> multicast(@Body Multicast multicast);
 
     /**
-     * Download image, video, and audio data sent from users.
+     * Method for Retrofit.
      *
-     * @see <a href="https://devdocs.line.me?java#get-content">//devdocs.line.me#get-content</a>
+     * @see LineMessagingClient#getMessageContent(String)
      */
     @Streaming
     @GET("v2/bot/message/{messageId}/content")
     Call<ResponseBody> getMessageContent(@Path("messageId") String messageId);
 
     /**
-     * Get user profile information.
+     * Method for Retrofit.
      *
-     * @see <a href="https://devdocs.line.me?java#bot-api-get-profile">//devdocs.line.me#bot-api-get-profile</a>
+     * @see LineMessagingClient#getProfile(String)
      */
     @GET("v2/bot/profile/{userId}")
     Call<UserProfileResponse> getProfile(@Path("userId") String userId);
 
     /**
-     * Get Group/Room member profile.
+     * Method for Retrofit.
      *
-     * @param sourceType "room" or "group".
-     * @param senderId Identifier of the group/room.
-     * @param userId Identifier of the user.
-     *
-     * @see <a href="https://devdocs.line.me?java#get-group-room-member-profile">//devdocs.line.me#get-group-room-member-profile</a>
+     * @see LineMessagingClient#getGroupMemberProfile(String, String)
+     * @see LineMessagingClient#getRoomMemberProfile(String, String)
      */
     @GET("v2/bot/{sourceType}/{senderId}/member/{userId}")
     Call<UserProfileResponse> getMemberProfile(
@@ -107,18 +97,10 @@ public interface LineMessagingService {
             @Path("userId") String userId);
 
     /**
-     * Get group/room member IDs.
+     * Method for Retrofit.
      *
-     * <p>Get group and room member IDs request example
-     * <p>Gets the user IDs of the members of a group or a room that the bot is in. This includes the user IDs of users who have not added the bot as a friend or has blocked the bot.
-     *
-     * <p><strong>INFO</strong> This feature is only available for LINE@ Approved accounts or official accounts.
-     *
-     * @param sourceType "room" or "group".
-     * @param senderId Identifier of the group/room.
-     * @param start continuationToken to next page.
-     *
-     * @see <a href="https://devdocs.line.me?java#get-group-room-member-profile">//devdocs.line.me#get-group-room-member-profile</a>
+     * @see LineMessagingClient#getGroupMembersIds(String, String)
+     * @see LineMessagingClient#getRoomMembersIds(String, String)
      */
     @GET("v2/bot/{sourceType}/{senderId}/members/ids")
     Call<MembersIdsResponse> getMembersIds(
@@ -127,18 +109,94 @@ public interface LineMessagingService {
             @Query("start") String start);
 
     /**
-     * Leave a group.
+     * Method for Retrofit.
      *
-     * @see <a href="https://devdocs.line.me?java#leave">//devdocs.line.me#leave</a>
+     * @see LineMessagingClient#leaveGroup(String)
      */
     @POST("v2/bot/group/{groupId}/leave")
     Call<BotApiResponse> leaveGroup(@Path("groupId") String groupId);
 
     /**
-     * Leave a room.
+     * Method for Retrofit.
      *
-     * @see <a href="https://devdocs.line.me?java#leave">//devdocs.line.me#leave</a>
+     * @see LineMessagingClient#leaveRoom(String)
      */
     @POST("v2/bot/room/{roomId}/leave")
     Call<BotApiResponse> leaveRoom(@Path("roomId") String roomId);
+
+    /**
+     * Method for Retrofit.
+     *
+     * @see LineMessagingClient#getRichMenu(String)
+     */
+    @GET("v2/bot/richmenu/{richMenuId}")
+    Call<RichMenuResponse> getRichMenu(@Path("richMenuId") String richMenuId);
+
+    /**
+     * Method for Retrofit.
+     *
+     * @see LineMessagingClient#createRichMenu(RichMenu)
+     */
+    @POST("v2/bot/richmenu")
+    Call<RichMenuIdResponse> createRichMenu(@Body RichMenu richMenu);
+
+    /**
+     * Method for Retrofit.
+     *
+     * @see LineMessagingClient#deleteRichMenu(String)
+     */
+    @DELETE("v2/bot/richmenu/{richMenuId}")
+    Call<Void> deleteRichMenu(@Path("richMenuId") String richMenuId);
+
+    /**
+     * Method for Retrofit.
+     *
+     * @see LineMessagingClient#getRichMenuIdOfUser(String)
+     */
+    @GET("v2/bot/user/{userId}/richmenu")
+    Call<RichMenuIdResponse> getRichMenuIdOfUser(@Path("userId") String userId);
+
+    /**
+     * Method for Retrofit.
+     *
+     * @see LineMessagingClient#linkRichMenuIdToUser(String, String)
+     */
+    @POST("v2/bot/user/{userId}/richmenu/{richMenuId}")
+    Call<Void> linkRichMenuToUser(
+            @Path("userId") String userId,
+            @Path("richMenuId") String richMenuId);
+
+    /**
+     * Method for Retrofit.
+     *
+     * @see LineMessagingClient#unlinkRichMenuIdFromUser(String)
+     */
+    @DELETE("v2/bot/user/{userId}/richmenu")
+    Call<Void> unlinkRichMenuIdFromUser(@Path("userId") String userId);
+
+    /**
+     * Method for Retrofit.
+     *
+     * @see LineMessagingClient#getRichMenuImage(String)
+     */
+    @GET("v2/bot/richmenu/{richMenuId}/content")
+    Call<ResponseBody> getRichMenuImage(@Path("richMenuId") String richMenuId);
+
+    /**
+     * Method for Retrofit.
+     *
+     * @see LineMessagingClient#setRichMenuImage(String, String, byte[])
+     */
+    @POST("v2/bot/richmenu/{richMenuId}/content")
+    Call<Void> uploadRichMenuImage(
+            @Path("richMenuId") String richMenuId,
+            @Body RequestBody requestBody);
+
+    /**
+     * Method for Retrofit.
+     *
+     * @see LineMessagingClient#getRichMenuList()
+     */
+    @GET("v2/bot/richmenu/list")
+    Call<RichMenuListResponse> getRichMenuList();
 }

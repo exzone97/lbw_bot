@@ -16,12 +16,13 @@
 
 package com.linecorp.bot.model.message.template;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import lombok.Value;
 
-import java.util.List;
+import lombok.Value;
 
 /**
  * Template message with multiple columns which can be cycled like a carousel.
@@ -30,7 +31,9 @@ import java.util.List;
 @JsonTypeName("image_carousel")
 public class ImageCarouselTemplate implements Template {
     /**
-     * List of columns(Max: 5)
+     * List of columns.
+     *
+     * <p>Max: 5.
      */
     private final List<ImageCarouselColumn> columns;
 

@@ -16,14 +16,20 @@
 
 package com.linecorp.bot.model.action;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import lombok.Value;
 
 /**
- * <p>
- * When this action is tapped, a postback event is returned via webhook with the date and time selected by the user from the date and time selection dialog.
- * </p>
+ * DatetimePickerAction.
+ *
+ * <p>When this action is tapped, a postback event is returned via webhook
+ * with the date and time selected by the user from the date and time selection dialog.
  */
 @Value
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -31,28 +37,35 @@ import lombok.Value;
 @JsonInclude(Include.NON_NULL)
 public class DatetimePickerAction implements Action {
     /**
-     * Label for the action<br>
-     * Required for templates other than image carousel. Max: 20 characters
-     * Optional for image carousel templates. Max: 12 characters.
+     * Label for the action.
+     *
+     * <ul>
+     * <li>Required for templates other than image carousel. Max: 20 characters</li>
+     * <li>Optional for image carousel templates. Max: 12 characters.</li>
+     * </ul>
      */
     private final String label;
 
     /**
-     * String returned via webhook in the postback.data property of the postback event<br>
-     * Max: 300 characters
+     * String returned via webhook in the postback.data property of the postback event.
+     *
+     * <p>Max: 300 characters
      */
     private final String data;
 
     /**
-     * Action mode
-     * date: Pick date
-     * time: Pick time
-     * datetime: Pick date and time
+     * Action mode.
+     *
+     * <ul>
+     * <li>date: Pick date
+     * <li>time: Pick time
+     * <li>datetime: Pick date and time
+     * </ul>
      */
     private final String mode;
 
     /**
-     * Initial value of date or time
+     * Initial value of date or time.
      */
     private final String initial;
 
@@ -70,15 +83,16 @@ public class DatetimePickerAction implements Action {
 
     /**
      * Create new instance.
+     *
      * @param label Label for the action. Max: 20 characters.
      * @param data String returned via webhook in the postback.data property of the postback event.
-     *              Max: 300 characters.
+     *         Max: 300 characters.
      * @param mode Action mode. One of 'date', 'time', 'datetime'.
      * @param initial Initial value of date or time (optional)
      * @param max Largest date or time value that can be selected.
-     *             Must be greater than the min value. (optional)
+     *         Must be greater than the min value. (optional)
      * @param min Smallest date or time value that can be selected.
-     *             Must be less than the max value. (optional)
+     *         Must be less than the max value. (optional)
      */
     @JsonCreator
     public DatetimePickerAction(

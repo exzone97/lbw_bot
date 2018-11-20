@@ -24,7 +24,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
-import com.linecorp.bot.client.LineMessagingServiceBuilder;
+import com.linecorp.bot.client.LineClientConstants;
 import com.linecorp.bot.spring.boot.BotPropertiesValidator.ValidBotProperties;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
@@ -51,7 +51,7 @@ public class LineBotProperties {
     private String channelToken;
 
     /**
-     * Channel secret
+     * Channel secret.
      */
     @Valid
     @NotNull
@@ -59,28 +59,28 @@ public class LineBotProperties {
 
     @Valid
     @NotNull
-    private String apiEndPoint = LineMessagingServiceBuilder.DEFAULT_API_END_POINT;
+    private String apiEndPoint = LineClientConstants.DEFAULT_API_END_POINT;
 
     /**
-     * Connection timeout in milliseconds
+     * Connection timeout in milliseconds.
      */
     @Valid
     @NotNull
-    private long connectTimeout = LineMessagingServiceBuilder.DEFAULT_CONNECT_TIMEOUT;
+    private long connectTimeout = LineClientConstants.DEFAULT_CONNECT_TIMEOUT_MILLIS;
 
     /**
-     * Read timeout in milliseconds
+     * Read timeout in milliseconds.
      */
     @Valid
     @NotNull
-    private long readTimeout = LineMessagingServiceBuilder.DEFAULT_READ_TIMEOUT;
+    private long readTimeout = LineClientConstants.DEFAULT_READ_TIMEOUT_MILLIS;
 
     /**
-     * Write timeout in milliseconds
+     * Write timeout in milliseconds.
      */
     @Valid
     @NotNull
-    private long writeTimeout = LineMessagingServiceBuilder.DEFAULT_WRITE_TIMEOUT;
+    private long writeTimeout = LineClientConstants.DEFAULT_WRITE_TIMEOUT_MILLIS;
 
     /**
      * Configuration for {@link LineMessageHandler} and {@link EventMapping}.
@@ -94,7 +94,7 @@ public class LineBotProperties {
         /**
          * Flag to enable/disable {@link LineMessageHandler} and {@link EventMapping}.
          *
-         * Default: {@code true}
+         * <p>Default: {@code true}
          */
         boolean enabled = true;
 
@@ -105,7 +105,7 @@ public class LineBotProperties {
         URI path = URI.create("/callback");
     }
 
-    enum ChannelTokenSupplyMode {
+    public enum ChannelTokenSupplyMode {
         /**
          * Use fixed channel token for public API user.
          */
@@ -114,8 +114,8 @@ public class LineBotProperties {
         /**
          * Supply channel token via channel token supplier for specific business partners.
          *
-         * @see <a href="https://devdocs.line.me/#issue-channel-access-token"
-         * >//devdocs.line.me/#issue-channel-access-token</a>
+         * @see <a href="https://developers.line.me/en/reference/messaging-api/#issue-channel-access-token"
+         *         >//developers.line.me/en/reference/messaging-api/#issue-channel-access-token</a>
          */
         SUPPLIER,
     }

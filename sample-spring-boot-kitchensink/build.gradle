@@ -18,6 +18,4 @@ apply plugin: 'org.springframework.boot'
 
 dependencies {
     compile project(':line-bot-spring-boot')
-	compile 'org.json:json:20160212'
-	compile 'org.jsoup:jsoup:1.11.1'
 }

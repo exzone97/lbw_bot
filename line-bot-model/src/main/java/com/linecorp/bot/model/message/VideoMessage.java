@@ -17,31 +17,60 @@
 package com.linecorp.bot.model.message;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
+import com.linecorp.bot.model.message.quickreply.QuickReply;
+
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 
 @Value
+@Builder(toBuilder = true)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonTypeName("video")
+@JsonDeserialize(builder = VideoMessage.VideoMessageBuilder.class)
 public class VideoMessage implements Message {
     /**
-     * URL of video file
+     * URL of video file.
+     *
      * <ul>
      * <li>HTTPS</li>
      * <li>mp4</li>
      * <li>Less than 1 minute</li>
      * <li>Max: 10 MB</li>
-     *  </ul>
+     * </ul>
      */
+    @NonNull
     private final String originalContentUrl;
 
     /**
-     * URL of preview image
+     * URL of preview image.
+     *
      * <ul>
-     *  <li>HTTPS</li>
-     *  <li>JPEG</li>
-     *  <li>Max: 240 x 240</li>
-     *  <li>Max: 1 MB</li>
+     * <li>HTTPS</li>
+     * <li>JPEG</li>
+     * <li>Max: 240 x 240</li>
+     * <li>Max: 1 MB</li>
      * </ul>
      */
+    @NonNull
     private final String previewImageUrl;
+
+    private final QuickReply quickReply;
+
+    /**
+     * Constructor without {@link #quickReply} parameter.
+     *
+     * <p>If you want use {@link QuickReply}, please use {@link #builder()} instead.
+     */
+    public VideoMessage(final String originalContentUrl, final String previewImageUrl) {
+        this(originalContentUrl, previewImageUrl, null);
+    }
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public static class VideoMessageBuilder {}
 }
