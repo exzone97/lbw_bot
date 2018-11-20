@@ -115,6 +115,69 @@ public class KitchenSinkController {
     }
 
     @EventMapping
+    public void handleStickerMessageEvent(MessageEvent<StickerMessageContent> event) {
+        handleSticker(event.getReplyToken(), event.getMessage());
+    }
+
+    @EventMapping
+    public void handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
+        LocationMessageContent locationMessage = event.getMessage();
+        reply(event.getReplyToken(), new LocationMessage(
+                locationMessage.getTitle(),
+                locationMessage.getAddress(),
+                locationMessage.getLatitude(),
+                locationMessage.getLongitude()
+        ));
+    }
+
+    @EventMapping
+    public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws IOException {
+        // You need to install ImageMagick
+        handleHeavyContent(
+                event.getReplyToken(),
+                event.getMessage().getId(),
+                responseBody -> {
+                    DownloadedContent jpg = saveContent("jpg", responseBody);
+                    DownloadedContent previewImg = createTempFile("jpg");
+                    system(
+                            "convert",
+                            "-resize", "240x",
+                            jpg.path.toString(),
+                            previewImg.path.toString());
+                    reply(((MessageEvent) event).getReplyToken(),
+                          new ImageMessage(jpg.getUri(), jpg.getUri()));
+                });
+    }
+
+    @EventMapping
+    public void handleAudioMessageEvent(MessageEvent<AudioMessageContent> event) throws IOException {
+        handleHeavyContent(
+                event.getReplyToken(),
+                event.getMessage().getId(),
+                responseBody -> {
+                    DownloadedContent mp4 = saveContent("mp4", responseBody);
+                    reply(event.getReplyToken(), new AudioMessage(mp4.getUri(), 100));
+                });
+    }
+
+    @EventMapping
+    public void handleVideoMessageEvent(MessageEvent<VideoMessageContent> event) throws IOException {
+        // You need to install ffmpeg and ImageMagick.
+        handleHeavyContent(
+                event.getReplyToken(),
+                event.getMessage().getId(),
+                responseBody -> {
+                    DownloadedContent mp4 = saveContent("mp4", responseBody);
+                    DownloadedContent previewImg = createTempFile("jpg");
+                    system("convert",
+                           mp4.path + "[0]",
+                           previewImg.path.toString());
+                    reply(((MessageEvent) event).getReplyToken(),
+                          new VideoMessage(mp4.getUri(), previewImg.uri));
+                });
+    }
+
+    @EventMapping
     public void handleUnfollowEvent(UnfollowEvent event) {
         log.info("unfollowed this bot: {}", event);
     }
@@ -185,21 +248,43 @@ public class KitchenSinkController {
         }
         messageConsumer.accept(response);
     }
+
+    private void handleSticker(String replyToken, StickerMessageContent content) {
+        reply(replyToken, new StickerMessage(
+                content.getPackageId(), content.getStickerId())
+        );
+    }
 	
 	HashMap<String,String> storedText = new HashMap<String,String>();
 	boolean bossStat = false;
+	boolean muteMode = false;
+	String cleverbotState = "";
 	
 	private void handleTextContent(String replyToken, Event event, TextMessageContent content)
             throws Exception {
         
 		String text = content.getText();
-        int index_1 = text.indexOf(' ');
-        String t = text.substring(0, index_1);
-        text = text.substring(index_1 + 1, text.length());
-		
+		String[] tArr = text.split(" ");
+		String t = tArr[0].toLowerCase();
+        log.info("Got text message from {}: {}", replyToken, text);
         switch (t) {
-			case "Boss": {
+			case "mute": {
+				if(!bossStat){
+					muteMode = true;
+					this.replyText(replyToken,"cleverbot ngga bakal respon lagi. 'unmute' untuk mengaktifkan kembali cleverbot.");
+				}
+				break;
+			}
+			case "unmute": {
+				if(!bossStat){
+					muteMode = false;
+					this.replyText(replyToken,"cleverbot bakal respon lagi. 'mute' untuk menonaktifkan sementara cleverbot.");
+				}
+				break;
+			}
+			case "boss": {
 				bossStat = true;
+				muteMode = false;
 				String url = "https://api.rss2json.com/v1/api.json?rss_url=http%3A%2F%2Frss.detik.com%2Findex.php%2Fdetikcom";
 				URL obj = new URL(url);
 				HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -222,65 +307,86 @@ public class KitchenSinkController {
 				LinkedList<Message> messages = new LinkedList<Message>();
         for (Element link : links) {
             if (link.attr("id").equalsIgnoreCase("detikdetailtext")) {
+               // System.out.println(link.attr("id")); //keluarannya nama id "detikdetailtext"
                 message = doc.select("#detikdetailtext").text();
 				messages.add(new TextMessage(message));
                 if (doc.select("#detikdetailtext .lihatjg").isEmpty()) {
+                    //System.out.println(t);
                 } else {
                     String t2 = doc.select("#detikdetailtext .lihatjg").text();
+                    //System.out.println(t2);
                     String[] tx = t.split(t2);
+					//message = tx[0] + tx[tx.length - 1];
 					messages.add(new TextMessage(tx[0]));
 					messages.add(new TextMessage(tx[tx.length - 1]));
+                    //System.out.println(tx[0] + tx[tx.length - 1]);
                 }
 
             }
-        }				
+        }
+				//JSONArray arr = myResponse.getJSONArray("items");
+				
+				
+				/*
+				for(int i=0 ; i<4 ; i++){
+					String bb = arr.get(i).toString();
+					JSONObject jj = new JSONObject(bb);
+					String ex = jj.getString("content");
+					while (ex.charAt(0) != '>') {
+						ex = ex.substring(1);
+					}
+					ex = ex.substring(1);
+					messages.add(new TextMessage(ex));
+				}
+				*/
+				
 				this.reply(
                         replyToken,
                         messages
 					);
 				
                 break;
+				//bossStat = true;
+				//String berita = "Sebuah perusahaan untuk berhasil haruslah kompetitif. Salah satu kuncinya adalah melalui karya inovasi. Sebagai perusahaan, PLN menyadari betul bahwa ide-ide kreatif bisa muncul dari mana saja, dari karyawan dengan jenjang karier manapun. Karenanya, setiap tahun sejak 1999 menjelang Hari Listrik Nasional yang diperingati setiap tanggal 27 Oktober, PLN selalu menggelar ajang lomba karya inovasi. Seiring dengan berjalannya waktu, lomba karya inovasi ini dikemas dengan lebih kreatif dan menarik, yakni melalui Learning, Innovation, Knowledge & Exhibition ";
+				//this.replyText(replyToken,berita);
+				//break;
 			}
-			case "Noboss": {
+			case "noboss": {
 				bossStat = false;
-				this.replyText(replyToken,"OK");
+				this.replyText(replyToken,"OK bosqu");
 				break;
 			}
-			case "Save": {
+			case "save": {
 				if(!bossStat){
-					if(text.indexOf( ' ' )<0){
-						this.replyText(replyToken,"Data yang diberikan kurang lengkap");
+					if(tArr.length<3){
+						this.replyText(replyToken,"data yang mau disimpan belum ada bosqu");
 					}
 					else{
-						index_1 = text.indexOf( ' ' );
-						String key = text.substring(0,index_1);
-						text = text.substring(index_1+1,text.length());
-                                                
-						String value = text.substring(0,index_1);
-					
-						storedText.put(key,value);
-						
-						this.replyText(replyToken,"OK");
+						String inputText = "";
+						for(int i = 2;i<tArr.length;i++){
+							inputText += tArr[i]+" ";
+						}
+						storedText.put(tArr[1],inputText);
+						this.replyText(replyToken,"siap bosqu");
 					}
 					
 				}
 				break;
 			}
-			case "Load": {
+			case "load": {
 				if(!bossStat){
-					index_1 = text.indexOf( ' ' );
-					String key = text.substring(0,index_1);
 					String r = "";
-					if(storedText.containsKey(key)){
-						r = storedText.get(key)+"";
+					if(storedText.containsKey(tArr[1])){
+						r = storedText.get(tArr[1])+"";
 					}
 					else{
-						r = "Kunci Pencarian Tidak Ditemukan";
+						r = "kunci ngga ketemu bosqu";
 					}
+					this.replyText(replyToken,r);
 				}
                 break;
 			}
-            case "Profile": {
+            case "profile": {
                 String userId = event.getSource().getUserId();
                 if (userId != null) {
                     lineMessagingClient
@@ -301,35 +407,196 @@ public class KitchenSinkController {
 
                             });
                 } else {
-                    this.replyText(replyToken, "User ID tidak");
+                    this.replyText(replyToken, "Bot can't use profile API without user ID");
                 }
                 break;
             }
-            case "Bye": {
+            case "bye": {
                 Source source = event.getSource();
                 if (source instanceof GroupSource) {
-                    this.replyText(replyToken, "Byeee");
+                    this.replyText(replyToken, "Leaving group");
                     lineMessagingClient.leaveGroup(((GroupSource) source).getGroupId()).get();
                 } else if (source instanceof RoomSource) {
-                    this.replyText(replyToken, "Byeee");
+                    this.replyText(replyToken, "Leaving room");
                     lineMessagingClient.leaveRoom(((RoomSource) source).getRoomId()).get();
                 } else {
-                    this.replyText(replyToken, "Tidak dapat meninggalkan chat 1:1");
+                    this.replyText(replyToken, "Bot can't leave from 1:1 chat");
                 }
                 break;
             }
-            
-            default: 
-				//buat helper
+            case "confirm": {
+                ConfirmTemplate confirmTemplate = new ConfirmTemplate(
+                        "Do it?",
+                        new MessageAction("Yes", "Yes!"),
+                        new MessageAction("No", "No!")
+                );
+                TemplateMessage templateMessage = new TemplateMessage("Confirm alt text", confirmTemplate);
+                this.reply(replyToken, templateMessage);
+                break;
+            }
+            case "buttons": {
+                String imageUrl = createUri("/static/buttons/1040.jpg");
+                ButtonsTemplate buttonsTemplate = new ButtonsTemplate(
+                        imageUrl,
+                        "My button sample",
+                        "Hello, my button",
+                        Arrays.asList(
+                                new URIAction("Go to line.me",
+                                              "https://line.me"),
+                                new PostbackAction("Say hello1",
+                                                   "hello �?�ん�?��?��?�"),
+                                new PostbackAction("言 hello2",
+                                                   "hello �?�ん�?��?��?�",
+                                                   "hello �?�ん�?��?��?�"),
+                                new MessageAction("Say message",
+                                                  "Rice=米")
+                        ));
+                TemplateMessage templateMessage = new TemplateMessage("Button alt text", buttonsTemplate);
+                this.reply(replyToken, templateMessage);
+                break;
+            }
+            case "carousel": {
+                String imageUrl = createUri("/static/buttons/1040.jpg");
+                CarouselTemplate carouselTemplate = new CarouselTemplate(
+                        Arrays.asList(
+                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
+                                        new URIAction("Go to line.me",
+                                                      "https://line.me"),
+                                        new URIAction("Go to line.me",
+                                                "https://line.me"),
+                                        new PostbackAction("Say hello1",
+                                                           "hello �?�ん�?��?��?�")
+                                )),
+                                new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
+                                        new PostbackAction("言 hello2",
+                                                           "hello �?�ん�?��?��?�",
+                                                           "hello �?�ん�?��?��?�"),
+                                        new PostbackAction("言 hello2",
+                                                "hello �?�ん�?��?��?�",
+                                                "hello �?�ん�?��?��?�"),
+                                        new MessageAction("Say message",
+                                                          "Rice=米")
+                                )),
+                                new CarouselColumn(imageUrl, "Datetime Picker", "Please select a date, time or datetime", Arrays.asList(
+                                        new DatetimePickerAction("Datetime",
+                                                "action=sel",
+                                                "datetime",
+                                                "2017-06-18T06:15",
+                                                "2100-12-31T23:59",
+                                                "1900-01-01T00:00"),
+                                        new DatetimePickerAction("Date",
+                                                "action=sel&only=date",
+                                                "date",
+                                                "2017-06-18",
+                                                "2100-12-31",
+                                                "1900-01-01"),
+                                        new DatetimePickerAction("Time",
+                                                "action=sel&only=time",
+                                                "time",
+                                                "06:15",
+                                                "23:59",
+                                                "00:00")
+                                ))
+                        ));
+                TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
+                this.reply(replyToken, templateMessage);
+                break;
+            }
+            case "image_carousel": {
+                String imageUrl = createUri("/static/buttons/1040.jpg");
+                ImageCarouselTemplate imageCarouselTemplate = new ImageCarouselTemplate(
+                        Arrays.asList(
+                                new ImageCarouselColumn(imageUrl,
+                                        new URIAction("Goto line.me",
+                                                "https://line.me")
+                                ),
+                                new ImageCarouselColumn(imageUrl,
+                                        new MessageAction("Say message",
+                                                "Rice=米")
+                                ),
+                                new ImageCarouselColumn(imageUrl,
+                                        new PostbackAction("言 hello2",
+                                                "hello �?�ん�?��?��?�",
+                                                "hello �?�ん�?��?��?�")
+                                )
+                        ));
+                TemplateMessage templateMessage = new TemplateMessage("ImageCarousel alt text", imageCarouselTemplate);
+                this.reply(replyToken, templateMessage);
+                break;
+            }
+            case "imagemap":
+                this.reply(replyToken, new ImagemapMessage(
+                        createUri("/static/rich"),
+                        "This is alt text",
+                        new ImagemapBaseSize(1040, 1040),
+                        Arrays.asList(
+                                new URIImagemapAction(
+                                        "https://store.line.me/family/manga/en",
+                                        new ImagemapArea(
+                                                0, 0, 520, 520
+                                        )
+                                ),
+                                new URIImagemapAction(
+                                        "https://store.line.me/family/music/en",
+                                        new ImagemapArea(
+                                                520, 0, 520, 520
+                                        )
+                                ),
+                                new URIImagemapAction(
+                                        "https://store.line.me/family/play/en",
+                                        new ImagemapArea(
+                                                0, 520, 520, 520
+                                        )
+                                ),
+                                new MessageImagemapAction(
+                                        "URANAI!",
+                                        new ImagemapArea(
+                                                520, 520, 520, 520
+                                        )
+                                )
+                        )
+                ));
+                break;
+            default:
+				if(!muteMode){
+					log.info("Returns echo message {}: {}", replyToken, text);
+					String input = "input="+t;
+					String url = "https://www.cleverbot.com/getreply?key=CC50oBRajftdHPTciiKYAjkPpnA" + "&" + input;
+					if(!cleverbotState.equals("")){
+						url += "&cs=" + cleverbotState;
+					}
+				
+					URL obj = new URL(url);
+					HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+					con.setRequestMethod("GET");
+					//int status = con.getResponseCode();
+					//con.getInputStream();
+					//InputStreamReader isr = new InputStreamReader(con.getInputStream());
+					BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream() , "UTF-8"));
+					String inputLine;
+					StringBuilder response = new StringBuilder();
+					while ((inputLine = in.readLine()) != null){
+						response.append(inputLine);
+					}
+					in.close();
+					//String rspn = response.substring(13, response.length()-3);
+					JSONObject myResponse = new JSONObject(response.toString());
+					String resp = myResponse.getString("output");
+					cleverbotState = myResponse.getString("cs");
+					this.replyText(
+							replyToken,
+							resp
+					);
 					break;
-			
-			}
+				}
                 
         }
-    
+    }
 
     private static String createUri(String path) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build().toUriString();
+        return ServletUriComponentsBuilder.fromCurrentContextPath()
+                                          .path(path).build()
+                                          .toUriString();
     }
 
     private void system(String... args) {
