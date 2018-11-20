@@ -28,13 +28,18 @@ public abstract class LineMessagingException extends Exception {
     /**
      * Original error response from server.
      *
-     * <p>Null when error response is not exist.
+     * Null when error response is not exist.
      */
     private final ErrorResponse errorResponse;
 
     LineMessagingException(final String message, final ErrorResponse errorResponse,
                            final Throwable cause) {
-        super(message + (errorResponse != null ? " : " + errorResponse : ""), cause);
+        super(message, cause);
         this.errorResponse = errorResponse;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", " + errorResponse;
     }
 }

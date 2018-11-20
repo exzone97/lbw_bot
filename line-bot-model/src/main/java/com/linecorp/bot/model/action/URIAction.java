@@ -25,26 +25,20 @@ import lombok.Value;
 
 /**
  * When this action is tapped, the URI specified in the uri field is opened.
- *
- * <p>This action can NOT be configured with quick reply buttons.
- *
- * @see <a href="https://developers.line.me/en/reference/messaging-api/#uri-action">//developers.line.me/en/reference/messaging-api/#uri-action</a>
  */
 @Value
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeName("uri")
 public class URIAction implements Action {
     /**
-     * Label for the action.
-     *
-     * <p>Max: 20 characters
+     * Label for the action<br>
+     * Max: 20 characters
      */
     private final String label;
 
     /**
-     * URI opened when the action is performed.
-     *
-     * <p>Available values are: http, https, tel
+     * URI opened when the action is performed<br>
+     * http, https, tel
      */
     private final String uri;
 

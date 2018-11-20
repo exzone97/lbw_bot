@@ -17,32 +17,23 @@
 // ./gradlew clean && ./gradlew uploadArchives -Prelease
 
 buildscript {
-    ext.kotlin_version = '1.2.70'
-
     repositories {
         mavenCentral()
         maven { url 'https://plugins.gradle.org/m2/' }
         maven { url 'https://repo.spring.io/plugins-release' }
     }
     dependencies {
-        classpath 'gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.3'
-        classpath 'gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.5.2'
-        classpath 'io.spring.gradle:dependency-management-plugin:1.0.6.RELEASE'
-        classpath 'io.spring.gradle:propdeps-plugin:0.0.10.RELEASE'
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.15.RELEASE'
-        classpath 'io.franzbecker:gradle-lombok:1.14'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.puppycrawl.tools:checkstyle:8.12'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.20.0'
+        classpath 'gradle.plugin.com.gorylenko.gradle-git-properties:gradle-git-properties:1.4.17'
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE'
+        classpath 'io.spring.gradle:propdeps-plugin:0.0.9.RELEASE'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.6.RELEASE'
     }
 }
 
 apply plugin: 'idea'
-apply plugin: 'jacoco'
-apply plugin: 'com.github.ben-manes.versions'
 
 group = 'com.linecorp.bot'
-version = '2.2.0'
+version = '1.11.0'
 
 //set build variables based on build type (release, continuous integration, development)
 def isDevBuild
@@ -59,21 +50,17 @@ if (hasProperty('release')) {
     version += '-SNAPSHOT'
 }
 
-allprojects {
+subprojects {
     repositories {
         mavenCentral();
     }
-}
 
-subprojects {
-    apply plugin: 'com.github.spotbugs'
     apply plugin: 'propdeps'
     apply plugin: 'propdeps-maven'
     apply plugin: 'propdeps-idea'
     apply plugin: 'propdeps-eclipse'
+    apply plugin: 'findbugs'
     apply plugin: 'java'
-    apply plugin: 'checkstyle'
-    apply plugin: 'io.franzbecker.gradle-lombok'
     if (new File("${project.rootDir}/.git").exists()) {
         logger.info("There's .git directory. Create git.properties.")
         apply plugin: 'com.gorylenko.gradle-git-properties'
@@ -88,27 +75,30 @@ subprojects {
     group = rootProject.group
     version = rootProject.version
 
-    ext['guava.version'] = '26.0-jre'
-    ext['okhttp3.version'] = '3.11.0'
+    ext['guava.version'] = '23.0'
+    ext['okhttp3.version'] = '3.8.1'
 
     dependencyManagement {
         imports {
-            mavenBom 'io.spring.platform:platform-bom:Brussels-SR13'
+            mavenBom 'io.spring.platform:platform-bom:Brussels-SR4'
         }
 
         dependencies {
-            dependency 'com.github.stefanbirkner:system-rules:1.18.0'
+            dependency 'com.github.stefanbirkner:system-rules:1.16.1'
             dependency 'com.squareup.okhttp3:logging-interceptor:' + ext['okhttp3.version']
             dependency 'com.squareup.okhttp3:mockwebserver:' + ext['okhttp3.version']
-            dependency 'com.squareup.retrofit2:converter-jackson:2.4.0'
-            dependency 'com.squareup.retrofit2:retrofit:2.4.0'
-            dependency 'org.assertj:assertj-core:3.11.0'
-            dependency 'org.projectlombok:lombok:1.18.2'
+            dependency 'com.squareup.retrofit2:converter-jackson:2.3.0'
+            dependency 'com.squareup.retrofit2:retrofit:2.3.0'
+            dependency 'org.assertj:assertj-core:3.8.0'
+            dependency 'org.projectlombok:lombok:1.16.18'
         }
     }
 
     dependencies {
-        compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+        compileOnly 'org.projectlombok:lombok'
+        testCompileOnly 'org.projectlombok:lombok'
+
+        compileOnly "org.springframework.boot:spring-boot-configuration-processor"
         // http://docs.spring.io/spring-boot/docs/current/reference/html/configuration-metadata.html#configuration-metadata-annotation-processor
 
         testCompile 'com.google.guava:guava'
@@ -122,67 +112,20 @@ subprojects {
     compileJava.dependsOn(processResources)
     // http://docs.spring.io/spring-boot/docs/current/reference/html/configuration-metadata.html#configuration-metadata-annotation-processor
 
-    def springManagedModules = [
-        'org.springframework',
-        'com.fasterxml.jackson',
-        'javax.validation',
-        'org.hibernate',
-        'javax.servlet'
-    ];
-    dependencyUpdates.resolutionStrategy {
-        componentSelection { rules ->
-            rules.all { ComponentSelection selection ->
-                boolean springManaged = springManagedModules.any { module ->
-                    selection.candidate.group.startsWith(module)
-                }
-                if (springManaged) {
-                    selection.reject('Spring Managed')
-                }
-                boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
-                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}\d*[.\d-]*/
-                }
-                if (rejected) {
-                    selection.reject('Release candidate')
-                }
-            }
-        }
-    }
-
     jar {
         manifest {
             attributes 'Implementation-Title': project.name,
-                'Implementation-Version': version
+                    'Implementation-Version': version
         }
-    }
-
-    lombok {
-        version = '1.18.2'
     }
 
     if (!project.name.startsWith('sample-')) {
-        task delombok(type: io.franzbecker.gradle.lombok.task.DelombokTask, dependsOn: compileJava) {
-            ext.outputDir = file("$buildDir/delombok")
-            outputs.dir(outputDir)
-            sourceSets.main.java.srcDirs.each {
-                inputs.dir(it)
-                args(it, "-d", outputDir)
-            }
-        }
-
-        javadoc {
-            dependsOn delombok
-            source = delombok.outputDir
-            options.locale = 'en_US'
-            options.addStringOption('Xdoclint:none', '-quiet')
-            // To create javadoc for generated method&constructor, delombok & run javadoc on delombok.outputDir.
-        }
-
-        task javadocJar(type: Jar, dependsOn: 'javadoc') {
+        task javadocJar(type: Jar) {
             classifier = 'javadoc'
-            from javadoc.destinationDir
+            from "${buildDir}/javadoc"
         }
 
-        task sourcesJar(type: Jar, dependsOn: 'classes') {
+        task sourcesJar(type: Jar) {
             classifier = 'sources'
             from sourceSets.main.allSource
         }
@@ -192,17 +135,8 @@ subprojects {
         }
     }
 
-    checkstyle {
-        configProperties = [projectDir: rootProject.projectDir]
-        toolVersion = '8.12'
-    }
-
-    spotbugs {
-        excludeFilter = file("$rootProject.projectDir/config/findbugs/excludeFilter.xml")
-    }
-
     compileJava {
-        options.compilerArgs << '-Xlint:all' << '-Xlint:deprecation' << '-Werror' << '-Xlint:-processing' << '-parameters'
+        options.compilerArgs << '-Xlint:all' << '-Werror' << '-Xlint:-processing' << '-parameters'
     }
 
     project.plugins.withType(org.springframework.boot.gradle.plugin.SpringBootPlugin) {
@@ -212,25 +146,8 @@ subprojects {
     }
 }
 
-task codeCoverageReport(type: JacocoReport) {
-    onlyIf = { true }
-    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
-
-    [':line-bot-api-client', ':line-bot-model', ':line-bot-servlet', ':line-bot-spring-boot', ':line-bot-cli'].each {
-        sourceSets(project(it).sourceSets.main)
-    }
-
-    reports {
-        xml.enabled true
-        xml.destination file('reports/jacoco/report.xml')
-        html.enabled true
-        csv.enabled false
-    }
-}
-
-[':line-bot-api-client', ':line-bot-model', ':line-bot-servlet', ':line-bot-spring-boot', ':line-bot-cli'].each { projectName ->
+[':line-bot-api-client', ':line-bot-model', ':line-bot-servlet', ':line-bot-spring-boot'].each { projectName ->
     project(projectName) { project ->
-        apply plugin: 'jacoco'
         apply plugin: 'signing'
         apply plugin: 'maven'
 
@@ -276,11 +193,6 @@ task codeCoverageReport(type: JacocoReport) {
                                     name 'Tokuhiro Matsuno'
                                     email 'tokuhirom@gmail.com'
                                 }
-                                developer {
-                                    id 'kazuki-ma'
-                                    name 'Kazuki MATSUDA'
-                                    email 'matsuda.kazuki@gmail.com'
-                                }
                             }
                         }
                     }
@@ -288,4 +200,12 @@ task codeCoverageReport(type: JacocoReport) {
             }
         }
     }
+}
+
+repositories {
+    mavenCentral()
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.0'
 }

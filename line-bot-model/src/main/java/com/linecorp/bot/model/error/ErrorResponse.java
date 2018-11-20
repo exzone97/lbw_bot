@@ -19,7 +19,6 @@ package com.linecorp.bot.model.error;
 import java.util.Collections;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Value;
@@ -27,28 +26,23 @@ import lombok.Value;
 /**
  * Error response from LINE Messaging Server.
  *
- * @see <a href="https://developers.line.me/en/reference/messaging-api/#error-responses">//developers.line.me/en/reference/messaging-api/#error-responses</a>
+ * @see <a href="https://devdocs.line.me/#error-response">//devdocs.line.me/#error-response</a>
  */
 @Value
 public class ErrorResponse {
-    /** Request ID in response header. */
-    String requestId;
-
     /** Summary or details of the error. */
     String message;
 
     /**
      * Details of the error.
      *
-     * <p>Always non-null but can be empty.
+     * In this class, always non-null but can be empty.
      */
     List<ErrorDetail> details;
 
     public ErrorResponse(
-            @JacksonInject("requestId") final String requestId,
             @JsonProperty("message") final String message,
             @JsonProperty("details") final List<ErrorDetail> details) {
-        this.requestId = requestId;
         this.message = message;
         this.details = details != null ? details : Collections.emptyList();
     }

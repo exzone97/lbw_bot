@@ -18,6 +18,8 @@ package com.linecorp.bot.model.event;
 
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import com.linecorp.bot.model.event.beacon.BeaconContent;
@@ -32,12 +34,12 @@ import lombok.Value;
 @JsonTypeName("beacon")
 public class BeaconEvent implements Event, ReplyEvent {
     /**
-     * Token for replying to this event.
+     * Token for replying to this event
      */
     private final String replyToken;
 
     /**
-     * JSON object which contains the source of the event.
+     * JSON object which contains the source of the event
      */
     private final Source source;
 
@@ -47,15 +49,17 @@ public class BeaconEvent implements Event, ReplyEvent {
     private final BeaconContent beacon;
 
     /**
-     * Time of the event.
+     * Time of the event
      */
     private final Instant timestamp;
 
+    @JsonCreator
     public BeaconEvent(
-            final String replyToken,
-            final Source source,
-            final Instant timestamp,
-            final BeaconContent beacon) {
+            @JsonProperty("replyToken") String replyToken,
+            @JsonProperty("source") Source source,
+            @JsonProperty("timestamp") Instant timestamp,
+            @JsonProperty("beacon") BeaconContent beacon
+    ) {
         this.replyToken = replyToken;
         this.source = source;
         this.timestamp = timestamp;

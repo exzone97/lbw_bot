@@ -1,50 +1,23 @@
-/*
- * Copyright 2018 LINE Corporation
- *
- * LINE Corporation licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at:
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations
- * under the License.
- */
-
 package com.linecorp.bot.model.message;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.net.URI;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 
-import com.linecorp.bot.model.Multicast;
-import com.linecorp.bot.model.action.CameraAction;
-import com.linecorp.bot.model.action.CameraRollAction;
-import com.linecorp.bot.model.action.LocationAction;
 import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.action.URIAction;
 import com.linecorp.bot.model.message.imagemap.ImagemapBaseSize;
-import com.linecorp.bot.model.message.quickreply.QuickReply;
-import com.linecorp.bot.model.message.quickreply.QuickReplyItem;
 import com.linecorp.bot.model.message.template.ButtonsTemplate;
 import com.linecorp.bot.model.message.template.CarouselColumn;
 import com.linecorp.bot.model.message.template.CarouselTemplate;
 import com.linecorp.bot.model.message.template.ConfirmTemplate;
-import com.linecorp.bot.model.testutil.TestUtil;
 
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -54,10 +27,8 @@ import lombok.extern.slf4j.Slf4j;
  *
  * <p>This is not a part of SDK SPEC but please check it is expected/unavoidable or not when any test is broken.
  *
- * <p><strong>IMPORTANT</strong>: Message serialization/deserialization by JSON
- * is to be able to create a proof of concept in simple.
- * This test do not intended serialization format stability.
- * Serialized JSON format may be different depending on the version.
+ * <p><strong>IMPORTANT</strong>: Message serialization/deserialization by JSON is to be able to create a proof of concept in simple.
+ * This test do not intended serialization format stability. Serialized JSON format may be different depending on the version.
  */
 @Slf4j
 public class MessageJsonReconstructionTest {
@@ -65,36 +36,13 @@ public class MessageJsonReconstructionTest {
 
     @Before
     public void setUp() throws Exception {
-        objectMapper = TestUtil.objectMapperWithProductionConfiguration(false);
+        objectMapper = new ObjectMapper()
+                .registerModule(new ParameterNamesModule());
     }
 
     @Test
     public void textMessageTest() {
         test(new TextMessage("TEST"));
-    }
-
-    @Test
-    public void textMessageWithQuickReplyTest() {
-        List<QuickReplyItem> items = asList(
-                QuickReplyItem.builder()
-                              .action(CameraAction.withLabel("Camera Action Label"))
-                              .imageUrl(URI.create("https://example.com/image.png"))
-                              .build(),
-                QuickReplyItem.builder()
-                              .action(CameraRollAction.withLabel("Camera Roll Action Label"))
-                              .build(),
-                QuickReplyItem.builder()
-                              .action(LocationAction.withLabel("Location Action"))
-                              .build()
-        );
-
-        TextMessage target = TextMessage
-                .builder()
-                .text("TEST")
-                .quickReply(QuickReply.items(items))
-                .build();
-
-        test(target);
     }
 
     @Test
@@ -114,22 +62,13 @@ public class MessageJsonReconstructionTest {
 
     @Test
     public void imagemapMessageTest() {
-        test(ImagemapMessage.builder()
-                            .baseUrl("baseUrl")
-                            .altText("altText")
-                            .baseSize(new ImagemapBaseSize(1040, 1040))
-                            .actions(emptyList())
-                            .build());
+        test(new ImagemapMessage("baseUrl", "altText", new ImagemapBaseSize(1040, 1040),
+                                 emptyList()));
     }
 
     @Test
     public void locationMessageTest() {
-        test(LocationMessage.builder()
-                            .title("title")
-                            .address("address")
-                            .longitude(135.0)
-                            .latitude(0.0)
-                            .build());
+        test(new LocationMessage("title", "address", 135.0, 0.0));
     }
 
     @Test
@@ -159,33 +98,19 @@ public class MessageJsonReconstructionTest {
         test(new TemplateMessage("ALT", buttonsTemplate));
     }
 
-    @Test
-    public void flexMessage() {
-        final FlexMessage flexMessage = new ExampleFlexMessageSupplier().get();
-        test(flexMessage);
-    }
-
-    @Test
-    public void multicastTest() {
-        final Multicast multicast =
-                new Multicast(singleton("LINE_ID"), singletonList(new TextMessage("text")));
-
-        test(multicast);
-    }
-
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    void test(final Object original) {
-        final Object reconstructed = serializeThenDeserialize(original);
+    void test(final Message original) {
+        final Message reconstructed = serializeThenDeserialize(original);
         assertThat(reconstructed).isEqualTo(original);
     }
 
     @SneakyThrows
-    Object serializeThenDeserialize(final Object original) {
+    Message serializeThenDeserialize(final Message original) {
         log.info("Original:      {}", original);
         final String asJson = objectMapper.writeValueAsString(original);
         log.info("AS JSON:       {}", asJson);
-        final Object reconstructed = objectMapper.readValue(asJson, original.getClass());
+        final Message reconstructed = objectMapper.readValue(asJson, Message.class);
         log.info("Reconstructed: {}", reconstructed);
 
         return reconstructed;

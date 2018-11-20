@@ -56,17 +56,17 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Dispatcher for LINE Message Event Handling.
  *
- * <p>Dispatch target method is collected by Spring's bean.
+ * Dispatch target method is collected by Spring's bean.
  *
- * <p>Event endpoint is configurable by {@code line.bot.callback-path} parameter.
+ * Event endpoint is configurable by {@code line.bot.callback-path} parameter.
  *
  * <h2>Event Handler method rule.</h2>
  *
- * <p>The class and method with following rules are collected by LINE Messaging Event handler.
+ * The class and method with following rules are collected by LINE Messaging Event handler.
  *
  * <ul>
- * <li>Class annotated with {@link LineMessageHandler}</li>
- * <li>Method annotated with {@link EventMapping}.</li>
+ *     <li>Class annotated with {@link LineMessageHandler}</li>
+ *     <li>Method annotated with {@link EventMapping}.</li>
  * </ul>
  */
 @Slf4j
@@ -231,9 +231,9 @@ public class LineMessageHandlerSupport {
         @Override
         public boolean test(final Event event) {
             return supportEvent.isAssignableFrom(event.getClass())
-                   && (messageContentType == null
-                       || event instanceof MessageEvent
-                          && filterByType(messageContentType, ((MessageEvent<?>) event).getMessage()));
+                   && (messageContentType == null ||
+                       event instanceof MessageEvent &&
+                       filterByType(messageContentType, ((MessageEvent<?>) event).getMessage()));
         }
 
         private static boolean filterByType(final Class<?> clazz, final Object content) {
