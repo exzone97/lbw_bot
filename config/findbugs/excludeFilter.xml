@@ -1,5 +1,0 @@
-<FindBugsFilter>
-  <Match>
-    <Bug pattern="OBL_UNSATISFIED_OBLIGATION" />
-  </Match>
-</FindBugsFilter>
