@@ -354,8 +354,8 @@ public class KitchenSinkController {
               this.replyText(replyToken, "1. Boss - Command ini berfungsi untuk menampilkan teks berita secara random dan mematikan fungsi command lain." + "\n" +
                             "2. Noboss - Command ini adalah kebalikan dari command boss, yaitu untuk mengaktifkan kembali fungsi semua command yang ada." + "\n" +
                             "3. Save - Command ini terdiri atas 2 parameter yaitu key dan value untuk menyimpan data yang diinginkan." + "\n" +
-                            "4. Load - Command ini terdiri atas 1 parameter yaitu key yang akan mengembalikan value sesuai dengan key yang dimasukan." + "\n"
-                            "5. Profile - Command ini berfungsi untuk menampilkan nama dan status pengguna." + "\n"
+                            "4. Load - Command ini terdiri atas 1 parameter yaitu key yang akan mengembalikan value sesuai dengan key yang dimasukan." + "\n" +
+                            "5. Profile - Command ini berfungsi untuk menampilkan nama dan status pengguna." + "\n" +
                             "6. Calc - Command ini terdiri atas 3 parameter yaitu [operand1], [operator], dan [operand2] yang berfungsi sebagai kalkulator.");
               break;
             }
